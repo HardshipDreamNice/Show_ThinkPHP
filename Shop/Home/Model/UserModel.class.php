@@ -7,7 +7,8 @@ Class UserModel extends \Think\Model {
         'password',
         'rpassword',
         'email',
-        'salt'
+        'salt',
+        'authcode'
     );
 
     /**
@@ -50,14 +51,36 @@ Class UserModel extends \Think\Model {
         array('password','require','密码不能为空'),
         array('authcode','require','验证码不能为空'),
         // 验证验证码是否输入正确
-        array('authcode','check_verify','验证码输入不正确',1,'callback'),
+        array('authcode','check_verify','验证码输入错误',1,'callback'),
     );
 
     // 验证码检测方法
-    public function check_verify($code, $id = '')
+    protected function check_verify($code, $id = '')
     {
         $verify = new \Think\Verify();
         return $verify->check($code, $id);
+    }
+
+    // 验证输入的用户名与密码是否正确
+    public function login()
+    {
+        $username = I('post.username');
+        $password = I('post.password');
+
+        // 取出数据
+        $where['username'] = array('eq',$username);
+        $info = $this->field('id,password,salt')->where($where)->find();
+        if ($info) {
+            // 验证用户密码
+            if (md5(md5($password).$info['salt']) == $info['password']) {
+                $_SESSION['user_id'] = $info['id'];
+                $_SESSION['username'] = $username;
+                return true;
+            }
+        }else{
+            $this->error('用户名或密码错误');
+            return false;
+        }
     }
 }
  ?>

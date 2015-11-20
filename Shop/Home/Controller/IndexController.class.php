@@ -56,4 +56,25 @@ class IndexController extends Controller
         $this->assign('goodsdata',$goodsdata);
         $this->display();
     }
+
+    // 商品内容页
+    public function detail()
+    {
+        // 跨模块取出导航
+        $cateModel = D('Admin/Category');
+        $navdata = $cateModel->getNav();
+        $this->assign('navdata',$navdata);
+
+        $goodsId = I('get.goods_id') + 0;
+        $goodsModel = D('Admin/Goods');
+        $goodsdata = $goodsModel->where("id = {$goodsId}")->find();
+        dump($goodsdata);
+        if (empty($goodsdata)) {
+            header("Location:/index.php");
+        }
+
+        $this->assign("list",$goodsdata);
+
+        $this->display();
+    }
 }

@@ -9,4 +9,6 @@
     // 载入和兴文件
     include ('./ThinkPHP/ThinkPHP.php');
 
+
+
 ?>

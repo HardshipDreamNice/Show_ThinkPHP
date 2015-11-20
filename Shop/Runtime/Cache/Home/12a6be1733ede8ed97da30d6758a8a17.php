@@ -19,9 +19,13 @@
                 <div style="float: left;">
                     <font id="ECS_MEMBERZONE">
                         <div id="append_parent"></div>
-                        欢迎光临本店&nbsp;
-                        <a href="/index.php/Home/User/login"> 登录</a>
-                        <a href="/index.php/Home/User/register">注册</a>
+                        <?php if (!empty($_SESSION['user_id'])): ?>
+                            欢迎光临本店&nbsp;<?php echo $_SESSION['username']; ?>
+                            <a href="<?php echo U('Home/User/logont');?>">退出</a>
+                            <?php else: ?>
+                            <a href="<?php echo U('Home/User/login');?>"> 登录</a>
+                            <a href="<?php echo U('Home/User/register');?>">注册</a>
+                        <?php endif ?>
                     </font>
                 </div>
                 <div style="float: right;">
@@ -37,7 +41,7 @@
             <div id="mainNav" class="clearfix">
             <a href="/index.php" class="cur">首页<span></span></a>
             <?php foreach ($navdata as $v): ?>
-                <a href="/index.php/Home/User/category/cat_id/<?php echo ($v['id']); ?>"><?php echo $v['cat_name']; ?><span></span></a>
+                <a href="/index.php/home/index/category/cat_id/<?php echo ($v['id']); ?>"><?php echo $v['cat_name']; ?><span></span></a>
             <?php endforeach ?>
             </div>
         </div>

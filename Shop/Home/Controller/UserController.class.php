@@ -38,6 +38,22 @@ class UserController extends Controller
     // 登录
     public function login()
     {
+        if (IS_POST) {
+            // 完成登录操作
+            $userModel = D('User');
+            // 连贯操作 1.动态验证 2.过滤post数据
+            if ($userModel->validate($userModel->_validate_login)->create(I('post.'))) {
+                // 在Model中验证登录
+                if ($userModel->login()) {
+                    $this->success('登录成功', U('Home/index'));exit;
+                }else{
+                    $this->error($userModel->getError());
+                }
+            }else{
+                $this->error($userModel->getError());
+            }
+        }
+
         // 跨模块取出导航
         $cateModel = D('Admin/Category');
         $navdata = $cateModel->getNav();
@@ -55,6 +71,14 @@ class UserController extends Controller
         $Verify->length   = 4;
         $Verify->useNoise = false;
         $Verify->entry();
+    }
+
+    // 退出
+    public function logont(){
+        // 用户退出 清空session
+        $_SESSION['user_id'] = null;
+        $_SESSION['username'] = null;
+        $this->success('成功退出', U('Home/Index'));exit;
     }
 }
  ?>

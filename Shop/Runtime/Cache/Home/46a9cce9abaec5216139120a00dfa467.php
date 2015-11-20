@@ -19,9 +19,13 @@
                 <div style="float: left;">
                     <font id="ECS_MEMBERZONE">
                         <div id="append_parent"></div>
-                        欢迎光临本店&nbsp;
-                        <a href="/index.php/Home/User/login"> 登录</a>
-                        <a href="/index.php/Home/User/register">注册</a>
+                        <?php if (!empty($_SESSION['user_id'])): ?>
+                            欢迎光临本店&nbsp;<?php echo $_SESSION['username']; ?>
+                            <a href="<?php echo U('Home/User/logont');?>">退出</a>
+                            <?php else: ?>
+                            <a href="<?php echo U('Home/User/login');?>"> 登录</a>
+                            <a href="<?php echo U('Home/User/register');?>">注册</a>
+                        <?php endif ?>
                     </font>
                 </div>
                 <div style="float: right;">
@@ -81,7 +85,7 @@
             <div class="usBox clearfix">
                 <div class="usBox_1 f_l">
                     <div class="logtitle"></div>
-                    <form name="formLogin" action="#" method="post">
+                    <form name="formLogin" action="/index.php/Home/User/login.html" method="post">
                         <table align="left" border="0" cellpadding="3" cellspacing="5" width="100%">
                             <tbody><tr>
                                     <td align="right" width="15%">用户名</td>
@@ -96,7 +100,7 @@
                                 <tr>
                                     <td align="right">验证码</td>
                                     <td>
-                                        <input name="authcode" size="15" class="inputBg" type="password" />
+                                        <input name="authcode" size="15" class="inputBg" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -113,7 +117,7 @@
                                     <td>&nbsp;</td>
                                     <td align="left">
                                         <input name="act" value="act_login" type="hidden" />
-                                        <input name="back_act" value="./index.php" type="hidden" />
+                                       <!--  <input name="back_act" value="./index.php" type="hidden" /> -->
                                         <input name="submit" value="" class="us_Submit" type="submit" />
                                     </td>
                                 </tr>
